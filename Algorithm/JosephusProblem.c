@@ -8,25 +8,35 @@ struct node {
 };
 
 int main(int argc, char *argv[]) {
-    int i;
+    // read argument variable
     int N = atoi(argv[1]);
     int M = atoi(argv[2]);
-    link t = malloc(sizeof(*t));
-    link x = t;
-    t->item = 1;
-    x->next = t;
-    for (i = 2; i < N; i++) {
-        x = (x->next = malloc(sizeof(*x)));
-        x->item = i;
-        x->next = t;
+    // head node
+    link head = malloc(sizeof(*head));
+    head->item = 1;
+    // circulate
+    head->next = head;
+    // create other nodes
+    link curr = head;
+    int i;
+    for (i = 2; i <= N; i++) {
+        link nt = malloc(sizeof(*nt));
+        nt->item = i;
+        // circulate
+        nt->next = head;
+        curr->next = nt;
+        curr = nt;
     }
-    while (x != x->next) {
+    // selection
+    while (curr != curr->next) {
+        // skip node
         for (i = 1; i < M; i++) {
-            x = x->next;
+            curr = curr->next;
         }
-        x->next = x->next->next;
-        N--;
+        // delete node
+        curr->next = curr->next->next;
     }
-    printf("%d\n", x->item);
+    // print last left node
+    printf("%d\n", curr->item);
 }
 
