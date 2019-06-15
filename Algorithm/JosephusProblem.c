@@ -1,17 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef struct node *link;
-struct node {
-    int item;
-    link next;
-};
+#include "linknode.h"
+
 
 int main(int argc, char *argv[]) {
     // read argument variable
     int N = atoi(argv[1]);
     int M = atoi(argv[2]);
-    // head node
+    // create head node
     link head = malloc(sizeof(*head));
     head->item = 1;
     // circulate
@@ -24,19 +21,28 @@ int main(int argc, char *argv[]) {
         nt->item = i;
         // circulate
         nt->next = head;
+        // modify curr node
         curr->next = nt;
         curr = nt;
     }
     // selection
     while (curr != curr->next) {
-        // skip node
+        // skip nodes
         for (i = 1; i < M; i++) {
             curr = curr->next;
         }
         // delete node
-        curr->next = curr->next->next;
+        link temp = curr->next;
+        curr->next = temp->next;
+        free(temp);
+        // delete without free
+        //curr->next = curr->next->next;
     }
     // print last left node
     printf("%d\n", curr->item);
+
+    // Test Case:
+    // input: N=9, M=5
+    // output: 8
 }
 
